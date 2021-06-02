@@ -131,6 +131,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         
          String name=jTextField2.getText();
          String f_name=jTextField3.getText();
+         String m_name=jTextField4.getText();
          String age=jTextField5.getText();
          String m_p=jTextField6.getText();
          String gen=(String)jComboBox1.getSelectedItem();
@@ -141,8 +142,13 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
          String state=jTextField9.getText();
          
                  
-        if(name!="" && f_name!="" && age!="" && a_c!="" && quan!=0 && city!="" && state!="" )
-        {
+        if(name!="" && f_name!="" && m_name!=""&& age!="" && a_c!="" && m_p!="" && quan!=0 && city!="" && state!="" )
+           {
+               if(a_c.length()<14)
+                   jLabel36.setText("Incorrect Addar Number");
+               else if(m_p.length()<11)
+                  jLabel36.setText("Incorrect Mobile Number");
+               else{
             try {
                 ps=con.prepareStatement("INSERT INTO `donar's_details` ( `name`, `f_name`, `phone`, `age`, `date`, `gender`, `adhaar`, `blood_grp`, `quantity`, `city`, `state`) VALUES ( ?,?,?,?, CURRENT_DATE(),?,?,?,?,?,?);");
         ps.setString(1,name);
@@ -156,16 +162,77 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         ps.setString(9,city);
         ps.setString(10,state);
         ps.execute();
-      
+         resetdata();
+         
             } catch (SQLException ex) {
                 System.out.println("insert exception");
                 
             }
-        
+               }
         }
-        resetdata();
+        else
+        {
+             jLabel36.setText("Please Fill All Fields");
+        }
+            
+       
         
         
+    }
+    void fetchdataDialog()
+    {
+        try {
+            String a1="", a2="",b1="",b2="",o1="",o2="",ab1="",ab2="";
+            ps=con.prepareStatement("SELECT sum(quantity) FROM `donar's_details` WHERE blood_grp='A+'");
+             rs=ps.executeQuery();
+             rs.next();
+             a1=String.valueOf(rs.getInt(1));
+              ps=con.prepareStatement("SELECT sum(quantity) FROM `donar's_details` WHERE blood_grp='A-'");
+             rs=ps.executeQuery();
+              rs.next();
+             a2=String.valueOf(rs.getInt(1));
+              ps=con.prepareStatement("SELECT sum(quantity) FROM `donar's_details` WHERE blood_grp='B+'");
+             rs=ps.executeQuery();
+              rs.next();
+             b1=String.valueOf(rs.getInt(1));
+              ps=con.prepareStatement("SELECT sum(quantity) as total FROM `donar's_details` WHERE blood_grp='B-'");
+             rs=ps.executeQuery();
+              rs.next();
+             b2=String.valueOf(rs.getInt(1));
+              ps=con.prepareStatement("SELECT sum(quantity) as total FROM `donar's_details` WHERE blood_grp='O+'");
+             rs=ps.executeQuery();
+              rs.next();
+             o1=String.valueOf(rs.getInt(1));
+              ps=con.prepareStatement("SELECT sum(quantity) as total FROM `donar's_details` WHERE blood_grp='O-'");
+             rs=ps.executeQuery();
+              rs.next();
+             o2=String.valueOf(rs.getInt(1));
+              ps=con.prepareStatement("SELECT sum(quantity) as total FROM `donar's_details` WHERE blood_grp='AB+'");
+             rs=ps.executeQuery();
+              rs.next();
+             ab1=String.valueOf(rs.getInt(1));
+              ps=con.prepareStatement("SELECT sum(quantity) as total FROM `donar's_details` WHERE blood_grp='AB-'");
+             rs=ps.executeQuery();
+              rs.next();
+             ab2=String.valueOf(rs.getInt(1));
+             jLabel28.setText(a1+" Units");
+             jLabel29.setText(a2+" Units");
+             jLabel30.setText(b1+" Units");
+             jLabel31.setText(b2+" Units");
+             jLabel32.setText(o1+" Units");
+             jLabel33.setText(o2+" Units");
+             jLabel34.setText(ab1+" Units");
+             jLabel35.setText(ab2+" Units");
+            
+             
+             
+             
+             
+             
+        } catch (SQLException ex) {
+            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+             
     }
     void resetdata(){
             jTextField2.setText("");
@@ -177,6 +244,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
          jTextField8.setText("0");
          jTextField10.setText("");
          jTextField9.setText("");
+          jLabel36.setVisible(false);
     }
 
     
@@ -218,6 +286,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         jTextField9 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
+        jLabel36 = new javax.swing.JLabel();
         jFrame3 = new javax.swing.JFrame();
         jPanel4 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
@@ -229,6 +298,25 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
+        jDialog1 = new javax.swing.JDialog();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -243,10 +331,9 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         jFrame1.setResizable(false);
         jFrame1.setSize(new java.awt.Dimension(724, 576));
 
-        jPanel2.setBackground(new java.awt.Color(255, 202, 200));
+        jPanel2.setBackground(new java.awt.Color(255, 164, 130));
 
         jLabel5.setFont(new java.awt.Font("Bookman Old Style", 3, 48)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 153, 102));
         jLabel5.setText("DONAR'S DATABASE");
         jLabel5.setToolTipText("");
 
@@ -272,6 +359,11 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         jButton4.setBackground(new java.awt.Color(255, 255, 255));
         jButton4.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
         jButton4.setText("LOGOUT");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -317,7 +409,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
 
         jFrame2.setTitle("Donar's Details");
         jFrame2.setResizable(false);
-        jFrame2.setSize(new java.awt.Dimension(1001, 589));
+        jFrame2.setSize(new java.awt.Dimension(1009, 636));
 
         jPanel3.setBackground(new java.awt.Color(240, 217, 182));
 
@@ -393,6 +485,8 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         jLabel17.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
         jLabel17.setText("STATE");
 
+        jLabel36.setFont(new java.awt.Font("Bookman Old Style", 3, 24)); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -434,7 +528,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
                         .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(282, 282, 282))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
                         .addGap(414, 414, 414))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -452,11 +546,15 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
                                             .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addComponent(jLabel15))
-                        .addGap(0, 95, Short.MAX_VALUE))))
+                        .addGap(0, 104, Short.MAX_VALUE))))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(199, 199, 199)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(76, 76, 76))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(326, 326, 326))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -515,7 +613,9 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
                     .addComponent(jButton5)
                     .addComponent(jButton6)
                     .addComponent(jButton7))
-                .addGap(32, 32, 32))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51))
         );
 
         javax.swing.GroupLayout jFrame2Layout = new javax.swing.GroupLayout(jFrame2.getContentPane());
@@ -531,7 +631,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
 
         jFrame3.setTitle("RECORDS");
         jFrame3.setResizable(false);
-        jFrame3.setSize(new java.awt.Dimension(1026, 586));
+        jFrame3.setSize(new java.awt.Dimension(1026, 590));
 
         jPanel4.setBackground(new java.awt.Color(240, 138, 80));
 
@@ -570,6 +670,11 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
 
         jButton10.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
         jButton10.setText("STOCK");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         jButton11.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
         jButton11.setText("BACK");
@@ -626,9 +731,8 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
                 .addGap(29, 29, 29)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                        .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
@@ -643,13 +747,169 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jDialog1.setTitle("Total Stock");
+        jDialog1.setResizable(false);
+        jDialog1.setSize(new java.awt.Dimension(672, 502));
+
+        jPanel5.setBackground(new java.awt.Color(255, 148, 113));
+
+        jLabel19.setFont(new java.awt.Font("Bookman Old Style", 3, 36)); // NOI18N
+        jLabel19.setText("TOTAL STOCK");
+
+        jLabel20.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
+        jLabel20.setText("A+  :-");
+
+        jLabel21.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
+        jLabel21.setText("A-  :-");
+
+        jLabel22.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
+        jLabel22.setText("B+  :-");
+
+        jLabel23.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
+        jLabel23.setText("B-  :-");
+
+        jLabel24.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
+        jLabel24.setText("O+  :-");
+
+        jLabel25.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
+        jLabel25.setText("O-  :-");
+
+        jLabel26.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
+        jLabel26.setText("AB+  :-");
+
+        jLabel27.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
+        jLabel27.setText("AB-  :-");
+
+        jLabel28.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
+        jLabel28.setText("jLabel28");
+
+        jLabel29.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
+        jLabel29.setText("jlabel29");
+
+        jLabel30.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
+        jLabel30.setText("jLabel30");
+
+        jLabel31.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
+        jLabel31.setText("jLabel31");
+
+        jLabel32.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
+        jLabel32.setText("jLabel32");
+
+        jLabel33.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
+        jLabel33.setText("jLabel33");
+
+        jLabel34.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
+        jLabel34.setText("jLabel34");
+
+        jLabel35.setFont(new java.awt.Font("Bookman Old Style", 1, 18)); // NOI18N
+        jLabel35.setText("jLabel35");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(54, 54, 54)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel20))
+                    .addComponent(jLabel22)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                        .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(63, 63, 63)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel24))
+                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 122, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                            .addComponent(jLabel33, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(149, 149, 149)
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel20)
+                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel24)))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel25)))
+                        .addGap(61, 61, 61)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel26)
+                                .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(12, 12, 12))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(112, 112, 112)))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel23)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel27)
+                        .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(82, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BLOOD DONAR'S MANAGEMENT SYSTEM");
         setBackground(new java.awt.Color(255, 0, 51));
         setForeground(new java.awt.Color(255, 0, 0));
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(255, 213, 195));
+        jPanel1.setBackground(new java.awt.Color(255, 162, 137));
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setFont(new java.awt.Font("Bookman Old Style", 3, 48)); // NOI18N
@@ -661,6 +921,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         jLabel2.setForeground(new java.awt.Color(255, 51, 51));
         jLabel2.setText("MANAGEMENT SYSTEM");
 
+        jTextField1.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
         jTextField1.setToolTipText("");
 
         jLabel3.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
@@ -668,6 +929,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         jLabel3.setText("ADMIN");
         jLabel3.setToolTipText("");
 
+        jPasswordField1.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
         jPasswordField1.setToolTipText("");
 
         jLabel4.setFont(new java.awt.Font("Bookman Old Style", 1, 24)); // NOI18N
@@ -813,6 +1075,20 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
         jFrame1.setVisible(true);
     }                                         
 
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        // TODO add your handling code here:
+        fetchdataDialog();
+        jDialog1.setVisible(true);
+    }                                         
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+        jFrame1.dispose();
+        jTextField1.setText("");
+        jPasswordField1.setText("");
+        this.setVisible(true);
+    }                                        
+
     /**
      * @param args the command line arguments
      */
@@ -867,6 +1143,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
     private javax.swing.JFrame jFrame3;
@@ -880,8 +1157,26 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -892,6 +1187,7 @@ public boolean isCellEditable(int row,int column) //this makes all columns non-e
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
